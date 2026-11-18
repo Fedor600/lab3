@@ -1,86 +1,110 @@
 public class BinaryTree {
-    
     private Node root;
 
-    private Node nextNode(Node node, int value){
-        if (node == null){
-            return node;
-        }
-
-        Node temp = node;
-
-        if (temp.data <= value){
-            temp = temp.right;
-        }
-        else{
-            temp = temp.left;
-        }
-
-        return temp;
+    public BinaryTree() {
+        root = null;
     }
 
-    private Node searchPrevNode(Node node, int value){
-        if (node == null){
+    private Node nextNode(Node node, int value) {
+        if (node == null) {
             return null;
         }
-
-        Node temp = root;
-        while(temp != null || (temp.left.data != value) || temp.right.data != value){
-            temp = nextNode(temp, value);
+        if (value > node.data) {
+            return node.right;
+        } else {
+            return node.left;
         }
-
-        return temp;
     }
 
-    public void AddNode(int value){
-        if (root == null){
-            root.data = value;
-        }
-
+    private Node searchNode(int value) {
         Node temp = root;
-        while(temp != null){
+        while (temp != null) {
+            if (temp.data == value) {
+                return temp;
+            }
             temp = nextNode(temp, value);
         }
+        return null;
+    }
 
+    public boolean contains(int value) {
+        return searchNode(value) != null;
+    }
+
+    public void AddNode(int value) {
         Node newNode = new Node(value);
-        temp = newNode;
-    }
-
-    public void removeValue(int value){
-        if (root == null){
-            System.out.println("Такого значения нет!");
-        }
-
-        Node temp = root;
-
-        Node prevRemoveNode = searchPrevNode(temp, value);
-
-        if (prevRemoveNode == null){
+        if (root == null) {
+            root = newNode;
             return;
         }
 
-        Node removeNode = nextNode(prevRemoveNode, value);
-
-        temp = removeNode.left;
-
-        while(temp.right.right != null){
-            temp = temp.right;
-        }
-
-        Node replaceNode = temp.right;
-
-        temp.right = replaceNode.left;
-        
-        replaceNode.left = removeNode.left;
-        
-        replaceNode.right = removeNode.right;
-
-        if (prevRemoveNode.right == removeNode){
-            prevRemoveNode.right = replaceNode;
-        }
-        else{
-            prevRemoveNode.left = replaceNode;
+        Node temp = root;
+        while (true) {
+            Node next = nextNode(temp, value);
+            if (next == null) {
+                newNode.parent = temp;
+                if (value > temp.data) {
+                    temp.right = newNode;
+                } else {
+                    temp.left = newNode;
+                }
+                return;
+            }
+            temp = next;
         }
     }
 
+    public void removeValue(int value) {
+        Node removeNode = searchNode(value);
+        if (removeNode == null) {
+            System.out.println("Такого значения нет!");
+            return;
+        }
+
+        if (removeNode.left != null && removeNode.right != null) {
+            Node replaceNode = removeNode.left;
+            while (replaceNode.right != null) {
+                replaceNode = replaceNode.right;
+            }
+            removeNode.data = replaceNode.data;
+            removeNode = replaceNode;
+        }
+
+        Node child;
+        if (removeNode.left != null) {
+            child = removeNode.left;
+        } else {
+            child = removeNode.right;
+        }
+
+        if (child != null) {
+            child.parent = removeNode.parent;
+        }
+
+        if (removeNode.parent == null) {
+            root = child;
+        } else if (removeNode.parent.left == removeNode) {
+            removeNode.parent.left = child;
+        } else {
+            removeNode.parent.right = child;
+        }
+    }
+
+    private void traverse(Node node, StringBuilder result) {
+        if (node == null) {
+            return;
+        }
+        if (result.length() > 0) {
+            result.append(" ");
+        }
+        result.append(node.data);
+        traverse(node.left, result);
+        traverse(node.right, result);
+    }
+
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        traverse(root, result);
+        return result.toString();
+    }
 }
