@@ -1,8 +1,8 @@
 package lab3;
 
 public class Point {
-    int x;
-    int y;
+    private int x;
+    private int y;
     
     Point(){
         this.x = 0;
@@ -30,7 +30,6 @@ public class Point {
     
     @Override
     public String toString(){
-        String crdn = String.format("{ %d; %d}", getX(), getY());
-        return crdn; 
+        return String.format("{ %d; %d}", getX(), getY());; 
     }
 }

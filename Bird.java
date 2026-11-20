@@ -1,12 +1,11 @@
 package lab3;
 
 public abstract class Bird {
-    String voice;
-    String name;
 
-    public String getName(){
-        return name;
+    public abstract void sing();
+
+    @Override 
+    public String toString(){
+        return "Птица";
     }
-
-    public abstract String listenVoice();
 }
