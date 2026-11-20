@@ -3,9 +3,9 @@ package lab3;
 import java.util.ArrayList;
 
 public class Department {
-    Worker boss;
-    String nameDepartment;
-    ArrayList<Worker> workers;
+    private Worker boss;
+    private String nameDepartment;
+    private ArrayList<Worker> workers;
 
     public Department(){
         workers = new ArrayList<Worker>();
@@ -57,7 +57,7 @@ public class Department {
     }
 
     public ArrayList<Worker> getWorkers(){
-        return workers;
+        return new ArrayList<Worker>(workers);
     }
 
     @Override
