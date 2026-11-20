@@ -1,4 +1,4 @@
-package lab3;
+package ru.Shiakhmetov.birds;
 
 public abstract class Bird implements Singable{
 

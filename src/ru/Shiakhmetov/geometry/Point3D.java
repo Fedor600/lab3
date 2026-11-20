@@ -1,4 +1,4 @@
-package lab3;
+
 
 public class Point3D extends Point{
     private int z;

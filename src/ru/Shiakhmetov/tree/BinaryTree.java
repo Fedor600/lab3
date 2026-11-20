@@ -1,5 +1,3 @@
-package lab3;
-
 public class BinaryTree {
     
     private Node root;
@@ -86,7 +84,21 @@ public class BinaryTree {
         }
     }
 
-    
+     private void traverse(Node node, StringBuilder result) {
+        if (node == null) {
+            return;
+        }
+        if (result.length() > 0) {
+            result.append(" ");
+        }
+        result.append(node.data);
+        traverse(node.left, result);
+        traverse(node.right, result);
+    }
 
-
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        traverse(root, result);
+        return result.toString();
+    }
 }

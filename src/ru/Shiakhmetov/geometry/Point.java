@@ -1,5 +1,3 @@
-package lab3;
-
 public class Point {
     private int x;
     private int y;
@@ -44,6 +42,6 @@ public class Point {
     
     @Override
     public String toString(){
-        return String.format("{ %d; %d}", getX(), getY());; 
+        return String.format("{ %d; %d}", getX(), getY()); 
     }
 }
