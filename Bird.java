@@ -1,6 +1,6 @@
 package lab3;
 
-public abstract class Bird {
+public abstract class Bird implements Singable{
 
     public abstract void sing();
 

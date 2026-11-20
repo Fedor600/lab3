@@ -27,6 +27,20 @@ public class Point {
         return this.y;
     }
 
+    @Override 
+    public boolean equals(Object obj){
+        if (this == obj){
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()){
+            return false;
+        }
+
+        Point point = (Point) obj;
+
+        return this.x == point.getX() && this.y == point.getY();
+    }
     
     @Override
     public String toString(){
