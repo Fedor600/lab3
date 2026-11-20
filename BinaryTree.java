@@ -1,110 +1,92 @@
+package lab3;
+
 public class BinaryTree {
+    
     private Node root;
 
-    public BinaryTree() {
-        root = null;
+    private Node nextNode(Node node, int value){
+        if (node == null){
+            return node;
+        }
+
+        Node temp = node;
+
+        if (temp.data <= value){
+            temp = temp.right;
+        }
+        else{
+            temp = temp.left;
+        }
+
+        return temp;
     }
 
-    private Node nextNode(Node node, int value) {
-        if (node == null) {
+    private Node searchPrevNode(Node node, int value){
+        if (node == null){
             return null;
         }
-        if (value > node.data) {
-            return node.right;
-        } else {
-            return node.left;
-        }
-    }
 
-    private Node searchNode(int value) {
         Node temp = root;
-        while (temp != null) {
-            if (temp.data == value) {
-                return temp;
-            }
+        while(temp != null || (temp.left.data != value) || temp.right.data != value){
             temp = nextNode(temp, value);
         }
-        return null;
+
+        return temp;
     }
 
-    public boolean contains(int value) {
-        return searchNode(value) != null;
-    }
-
-    public void AddNode(int value) {
-        Node newNode = new Node(value);
-        if (root == null) {
-            root = newNode;
-            return;
+    public void AddNode(int value){
+        if (root == null){
+            root.data = value;
         }
 
         Node temp = root;
-        while (true) {
-            Node next = nextNode(temp, value);
-            if (next == null) {
-                newNode.parent = temp;
-                if (value > temp.data) {
-                    temp.right = newNode;
-                } else {
-                    temp.left = newNode;
-                }
-                return;
-            }
-            temp = next;
+        while(temp != null){
+            temp = nextNode(temp, value);
         }
+
+        Node newNode = new Node(value);
+        temp = newNode;
     }
 
-    public void removeValue(int value) {
-        Node removeNode = searchNode(value);
-        if (removeNode == null) {
+    public void removeValue(int value){
+        if (root == null){
+            System.out.println("Такого значения нет!");
+        }
+
+        Node temp = root;
+
+        Node prevRemoveNode = searchPrevNode(temp, value);
+
+        if (prevRemoveNode == null){
             System.out.println("Такого значения нет!");
             return;
         }
 
-        if (removeNode.left != null && removeNode.right != null) {
-            Node replaceNode = removeNode.left;
-            while (replaceNode.right != null) {
-                replaceNode = replaceNode.right;
-            }
-            removeNode.data = replaceNode.data;
-            removeNode = replaceNode;
+        Node removeNode = nextNode(prevRemoveNode, value);
+
+        temp = removeNode.left;
+
+        while(temp.right.right != null){
+            temp = temp.right;
         }
 
-        Node child;
-        if (removeNode.left != null) {
-            child = removeNode.left;
-        } else {
-            child = removeNode.right;
-        }
+        Node replaceNode = temp.right;
 
-        if (child != null) {
-            child.parent = removeNode.parent;
-        }
+        temp.right = replaceNode.left;
+        
+        replaceNode.left = removeNode.left;
+        
+        replaceNode.right = removeNode.right;
 
-        if (removeNode.parent == null) {
-            root = child;
-        } else if (removeNode.parent.left == removeNode) {
-            removeNode.parent.left = child;
-        } else {
-            removeNode.parent.right = child;
+        if (prevRemoveNode.right == removeNode){
+            prevRemoveNode.right = replaceNode;
+        }
+        else{
+            prevRemoveNode.left = replaceNode;
         }
     }
 
-    private void traverse(Node node, StringBuilder result) {
-        if (node == null) {
-            return;
-        }
-        if (result.length() > 0) {
-            result.append(" ");
-        }
-        result.append(node.data);
-        traverse(node.left, result);
-        traverse(node.right, result);
-    }
+    
 
-    public String toString() {
-        StringBuilder result = new StringBuilder();
-        traverse(root, result);
-        return result.toString();
-    }
+
 }
