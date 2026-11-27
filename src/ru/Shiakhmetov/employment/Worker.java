@@ -1,7 +1,8 @@
+package ru.Shiakhmetov.employment;
 
 public class Worker {
-    Name name;
-    Department worker;
+    private Name name;
+    private Department worker;
 
     public Worker(){
         name = new Name();

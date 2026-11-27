@@ -1,3 +1,5 @@
+package ru.Shiakhmetov.tree;
+
 public class BinaryTree {
     
     private Node root;
@@ -18,73 +20,85 @@ public class BinaryTree {
 
         return temp;
     }
-
-    private Node searchPrevNode(Node node, int value){
-        if (node == null){
-            return null;
-        }
-
+    private Node searchNode(int value){
         Node temp = root;
-        while(temp != null || (temp.left.data != value) || temp.right.data != value){
+        while (temp != null){
+            if (temp.data == value){
+                return temp;
+            }
             temp = nextNode(temp, value);
         }
-
-        return temp;
+        return null;
     }
 
-    public void AddNode(int value){
+    public boolean isContains(int value){
+        return searchNode(value) != null;
+    }
+
+    public void addNode(int value){
         if (root == null){
-            root.data = value;
+            root = new Node(value);
+            return;
         }
 
         Node temp = root;
-        while(temp != null){
-            temp = nextNode(temp, value);
-        }
 
-        Node newNode = new Node(value);
-        temp = newNode;
+        boolean flag = true;
+        while(flag){
+            Node next = nextNode(temp, value);
+            if (next == null){
+                Node newNode = new Node(value);
+                newNode.parent = temp;
+                if (value > temp.data){
+                    temp.right = newNode;
+                }
+                else{
+                    temp.left = newNode;
+                }
+                flag = false;
+            }
+            temp = next;
+        }
     }
 
+    private void replaceNode(Node oldNode, Node newNode){
+        if (oldNode.parent == null){
+            root = newNode;
+        }
+        else if (oldNode.parent.left == oldNode){
+            oldNode.parent.left = newNode;
+        }
+        else{
+            oldNode.parent.right = newNode;
+        }
+        if (newNode != null){
+            newNode.parent = oldNode.parent;
+        }
+    }
     public void removeValue(int value){
-        if (root == null){
-            System.out.println("Такого значения нет!");
-        }
-
-        Node temp = root;
-
-        Node prevRemoveNode = searchPrevNode(temp, value);
-
-        if (prevRemoveNode == null){
+        Node node = searchNode(value);
+        if (node == null){
             System.out.println("Такого значения нет!");
             return;
         }
 
-        Node removeNode = nextNode(prevRemoveNode, value);
-
-        temp = removeNode.left;
-
-        while(temp.right.right != null){
-            temp = temp.right;
+        if (node.left == null){
+            replaceNode(node, node.right);
         }
-
-        Node replaceNode = temp.right;
-
-        temp.right = replaceNode.left;
-        
-        replaceNode.left = removeNode.left;
-        
-        replaceNode.right = removeNode.right;
-
-        if (prevRemoveNode.right == removeNode){
-            prevRemoveNode.right = replaceNode;
+        else if (node.right == null){
+            replaceNode(node, node.left);
         }
         else{
-            prevRemoveNode.left = replaceNode;
+            Node replacement = node.left;
+            while(replacement.right != null){
+                replacement = replacement.right;
+            }
+            node.data = replacement.data;
+            replaceNode(replacement, replacement.left);
         }
     }
 
-     private void traverse(Node node, StringBuilder result) {
+     private void round(Node node, StringBuilder result) {
         if (node == null) {
             return;
         }
@@ -92,13 +106,14 @@ public class BinaryTree {
             result.append(" ");
         }
         result.append(node.data);
-        traverse(node.left, result);
-        traverse(node.right, result);
+        round(node.left, result);
+        round(node.right, result);
     }
 
+    @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        traverse(root, result);
+        round(root, result);
         return result.toString();
     }
 }

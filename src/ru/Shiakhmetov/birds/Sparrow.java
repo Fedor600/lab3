@@ -1,3 +1,4 @@
+package ru.Shiakhmetov.birds;
 
 public class Sparrow extends Bird{
     

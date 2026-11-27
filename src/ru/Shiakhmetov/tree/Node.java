@@ -1,4 +1,4 @@
-
+package ru.Shiakhmetov.tree;
 
 public class Node {
     int data;

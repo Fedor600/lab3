@@ -1,4 +1,4 @@
-
+package ru.Shiakhmetov.employment;
 
 public class Name {
     String name;

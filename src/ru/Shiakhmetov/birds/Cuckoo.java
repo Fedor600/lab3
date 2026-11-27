@@ -1,4 +1,4 @@
-
+package ru.Shiakhmetov.birds;
 
 import java.util.Random;
 

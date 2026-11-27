@@ -1,4 +1,4 @@
-
+package ru.Shiakhmetov.employment;
 
 import java.util.ArrayList;
 
@@ -43,13 +43,13 @@ public class Department {
         return boss.getNameWorker();
     }
 
-    public void addWorker(Worker worker){
+    void addWorker(Worker worker){
         if (!workers.contains(worker)){
             workers.add(worker);
         }
     }
 
-    public void removeWorker(Worker worker){
+    void removeWorker(Worker worker){
         workers.remove(worker);
         if (boss == worker){
             boss = null;
